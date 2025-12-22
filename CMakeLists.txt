@@ -9,6 +9,7 @@ set(SOURCES
 
     solutions/solutions.cpp
     solutions/solution1.cpp
+    solutions/solution2.cpp
 
     utils/read.cpp
 )

@@ -8,8 +8,6 @@
 #include <numeric>
 #include <ranges>
 
-#include <iostream>
-
 auto Solutions::solution1() -> Answers {
 
     auto turns = Utils::readLines("inputs/input1.txt")

@@ -6,7 +6,8 @@
 #include <unordered_map>
 
 const std::unordered_map<int, std::function<Solutions::Answers()>> solutionForChoice {
-    {1, Solutions::solution1}
+    {1, Solutions::solution1},
+    {2, Solutions::solution2}
 };
 
 auto Solutions::selectSolution() -> std::function<Answers()> {
