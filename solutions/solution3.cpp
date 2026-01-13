@@ -1,22 +1,33 @@
 #include "solutions.h"
+#include "solution3.h"
 
 #include "../utils/read.h"
+
+#include <algorithm>
 
 auto Solutions::solution3() -> Answers {
 
     auto batteries = Utils::readLines("inputs/input3.txt");
 
-    int answerA = 0;
-    int answerB = 0;
-
+    long long answerA = 0;
+    long long answerB = 0;
 
     for (const auto& battery : batteries) {
-        auto first_digit_index = std::max_element(battery.begin(), battery.end()-1);
-        auto second_digit_index = std::max_element(first_digit_index+1, battery.end());
-
-        int joltage = Utils::parseIntChar(*first_digit_index) * 10 + Utils::parseIntChar(*second_digit_index);
-        answerA += joltage;
+        answerA += max_joltage_with_n_digits(battery, 2);
+        answerB += max_joltage_with_n_digits(battery, 12);
     }
 
     return {std::to_string(answerA), std::to_string(answerB)};
+}
+
+auto max_joltage_with_n_digits(const std::string& battery, int digits) -> long long {
+    auto search_from_index = battery.begin() - 1;
+
+    std::string selected_digits(digits, '0');
+    for (int digit = 0; digit < digits; ++digit) {
+        search_from_index = std::max_element(search_from_index+1, battery.end()-digits+digit+1);
+        selected_digits[digit] = *search_from_index;
+    }
+
+    return std::stoll(selected_digits);
 }
