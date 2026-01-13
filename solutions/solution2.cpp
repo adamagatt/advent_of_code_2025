@@ -3,8 +3,7 @@
 
 #include "../utils/read.h"
 
-#include <vector>
-#include <ranges>
+#include <vector>   
 
 auto Solutions::solution2() -> Answers {
     auto ranges = parse_input(Utils::readAsSingleLine("inputs/input2.txt"));
@@ -16,20 +15,19 @@ auto Solutions::solution2() -> Answers {
 
         for (long long check_num = range.first; check_num <= range.second; ++check_num) {
             std::string num_as_chars =  std::to_string(check_num);
-            int num_digits = num_as_chars.size();
+            std::string_view num_as_view = num_as_chars;
+            int num_digits = num_as_view.size();
 
-            bool any_repetitions = false;
             for (auto repetition_start_index : repetition_start_indices.at(num_digits)) {
-                if (num_as_chars.starts_with(num_as_chars.substr(repetition_start_index))) {
-                    any_repetitions = true;
+                auto number_without_first_repetition = num_as_view.substr(repetition_start_index);  
+                auto number_without_last_repetition = num_as_view.substr(0, num_digits-repetition_start_index);
+                if (number_without_first_repetition == number_without_last_repetition) {
+                    answerB += check_num;
                     if (repetition_start_index * 2 == num_digits) {
                         answerA += check_num;
                     }
                     break;
                 }
-            }
-            if (any_repetitions) {
-                answerB += check_num;
             }
         }
     }
