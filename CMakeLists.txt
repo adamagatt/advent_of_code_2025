@@ -16,6 +16,7 @@ set(SOURCES
 
 set(INPUTS
     inputs/input1.txt
+    inputs/input2.txt
 )
 
 add_executable(aoc25 ${SOURCES})

@@ -9,26 +9,32 @@
 auto Solutions::solution2() -> Answers {
     auto ranges = parse_input(Utils::readAsSingleLine("inputs/input2.txt"));
 
-    long long answerA = std::ranges::fold_left(
-        ranges | std::views::transform([](const auto& range) { // For each range
-            int half_fewest_digits = count_digits(range.first) / 2;
-            int half_most_digits = count_digits(range.second) / 2;
+    long long answerA = 0;
+    long long answerB = 0;
+    
+    for (const auto& range : ranges) {
+        int range_start_digits = count_digits(range.first);
+        int range_end_digits = count_digits(range.second);
 
-            return std::views::iota(half_fewest_digits, half_most_digits+1) // For all potential numbers of digits in the range
-                    | std::views::transform([&range](int num_digits) {
-                        long long pow10 = calc_pow10(num_digits);
-                        return std::views::iota(calc_pow10(num_digits-1), pow10) // For all numbers with that number of digits
-                                | std::views::transform([pow10](long long check_num){return repeat(check_num, pow10);})
-                                | std::views::filter([&range](long long check_num){return within_range(check_num, range.first, range.second);});
-                    });
-        })
-        | std::views::join // Flatten lists of numbers within number of digits
-        | std::views::join, // Flatten lists of numbers of digits
-        0,
-        std::plus<long long>{}
-    );
+        for (int num_digits = range_start_digits; num_digits <= range_end_digits; ++num_digits) {
+            for (auto repetitions : potential_repetitions.at(num_digits)) {
+                int subsequence_length = num_digits / repetitions;
 
-    int answerB = 0;
+                long long check_num_start = calc_pow10(subsequence_length-1);
+                long long check_num_end = calc_pow10(subsequence_length);
+
+                for (long long check_num = check_num_start; check_num < check_num_end; ++check_num) {
+                    long long repeated_num = repeat(check_num, repetitions);
+                    if (within_range(repeated_num, range.first, range.second)) {
+                        answerB += repeated_num;
+                        if (repetitions == 2) {
+                            answerA += repeated_num;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     return {std::to_string(answerA), std::to_string(answerB)};
 }
@@ -68,8 +74,16 @@ auto calc_pow10(int exp) -> long long {
     return result;
 }
 
-auto repeat(long long number, int pow10) -> long long {
-    return number * pow10 + number;
+auto repeat(long long number, int repeat_count) -> long long {
+    long long result = number;
+    
+    int number_length = count_digits(number);
+    long long multiplicand = calc_pow10(number_length);
+    for (int i = 1; i < repeat_count; ++i) {
+        result = result * multiplicand + number;
+    }
+
+    return result;
 }
 
 auto within_range(long long number, long long lower_bound, long long upper_bound) -> bool {
