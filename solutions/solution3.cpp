@@ -3,8 +3,6 @@
 
 #include "../utils/read.h"
 
-#include <algorithm>
-
 auto Solutions::solution3() -> Answers {
 
     auto batteries = Utils::readLines("inputs/input3.txt");
