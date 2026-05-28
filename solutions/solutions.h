@@ -7,14 +7,14 @@
 
 namespace Solutions {
     using Answers = std::pair<std::string, std::string>;
+    using Solution = Solutions::Answers(*)();
 
     auto solution1() -> Answers;
     auto solution2() -> Answers;
     auto solution3() -> Answers;
+    auto solution4() -> Answers;
 
-    constexpr int MAX = 3;
-
-    auto selectSolution() -> std::function<Answers()> ;
+    auto selectSolution() -> Solution;
 }
 
 #endif
