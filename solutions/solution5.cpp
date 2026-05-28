@@ -17,7 +17,6 @@ auto Solutions::solution5() -> Answers {
     while (anyOverlapsOrAdjacent(freshRanges)) {
         combineOverlappingOrAdjacentRanges(freshRanges);
     }
-    std::printf("Done\n");
 
     long long answerB = std::transform_reduce(
         freshRanges.begin(), freshRanges.end(),
@@ -25,9 +24,6 @@ auto Solutions::solution5() -> Answers {
         std::plus<>(),
         rangeLength
     );
-    for (const auto& freshRange : freshRanges) {
-        printf("Length: %lld, Range: %lld-%lld\n", rangeLength(freshRange), freshRange.first, freshRange.second);
-    }
 
     return {std::to_string(answerA), std::to_string(answerB)};
 }
