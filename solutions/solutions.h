@@ -13,6 +13,7 @@ namespace Solutions {
     auto solution2() -> Answers;
     auto solution3() -> Answers;
     auto solution4() -> Answers;
+    auto solution5() -> Answers;
 
     auto selectSolution() -> Solution;
 }
