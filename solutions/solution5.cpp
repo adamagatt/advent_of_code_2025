@@ -1,14 +1,16 @@
 #include "solutions.h"
 #include "solution5.h"
 
-#include <algorithm>
-#include <numeric>
 #include "../utils/read.h"
+
+#include <algorithm>
+#include <ranges>
 
 auto Solutions::solution5() -> Answers {
 
     auto [freshRanges, ingredients] = parseInput(Utils::readLines("inputs/input5.txt"));
 
+    // Part A is just the count of all ingredients that fall within some range
     int answerA = std::ranges::count_if(ingredients, [&freshRanges](long long ingredient) {
         return isFresh(freshRanges, ingredient);
     });
@@ -18,11 +20,11 @@ auto Solutions::solution5() -> Answers {
         combineOverlappingOrAdjacentRanges(freshRanges);
     }
 
-    long long answerB = std::transform_reduce(
-        freshRanges.begin(), freshRanges.end(),
+    // Sum the lengths of the newly-combined ranges
+    long long answerB = std::ranges::fold_left(
+        freshRanges | std::views::transform(rangeLength),
         0LL,
-        std::plus<>(),
-        rangeLength
+        std::plus<>()
     );
 
     return {std::to_string(answerA), std::to_string(answerB)};
