@@ -6,12 +6,13 @@
 #include <algorithm>
 #include <unordered_map>
 
-const std::array<Solutions::Solution, 5> solutions {{
+const std::array<Solutions::Solution, 6> solutions {{
     Solutions::solution1,
     Solutions::solution2,
     Solutions::solution3,
     Solutions::solution4,
-    Solutions::solution5
+    Solutions::solution5,
+    Solutions::solution6
 }};
 
 auto Solutions::selectSolution() -> Solution {
